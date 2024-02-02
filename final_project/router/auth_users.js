@@ -3,7 +3,7 @@ const jwt = require('jsonwebtoken');
 let books = require("./booksdb.js");
 const regd_users = express.Router();
 
-let users = [{"username":"fernando","password":"12345"}];
+let users = [{"username":"dennis","password":"abc"}];
 
 const isValid = (username)=>{ //returns boolean
 //write code to check is the username is valid
@@ -54,12 +54,15 @@ regd_users.put("/auth/review/:isbn", (req, res) => {
     if (books[isbn]) {
         let book = books[isbn];
         book.reviews[username] = review;
-        return res.status(200).send("Review successfully posted");
+        return res.status(200).send(`The review for the book with ISBN ${isbn} has been added/updated.`);        
     }
     else {
         return res.status(404).json({message: `ISBN ${isbn} not found`});
     }
 });
+
+
+
 
 regd_users.delete("/auth/review/:isbn", (req, res) => {
   const isbn = req.params.isbn;
@@ -67,7 +70,7 @@ regd_users.delete("/auth/review/:isbn", (req, res) => {
   if (books[isbn]) {
       let book = books[isbn];
       delete book.reviews[username];
-      return res.status(200).send("Review successfully deleted");
+      return res.status(200).send(`Review for the ISBN ${isbn} by the user ${username} deleted.`);
   }
   else {
       return res.status(404).json({message: `ISBN ${isbn} not found`});
